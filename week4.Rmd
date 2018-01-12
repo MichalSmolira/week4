@@ -1,0 +1,58 @@
+---
+title: "How much of the world have you visited"
+author: "Michal Smolira"
+date: "11 stycznia 2018"
+output:
+  slidy_presentation: default
+  ioslides_presentation: default
+  html_document:
+    self_contained: no
+---
+
+
+The aplication which you can access https://michalsmolira.shinyapps.io/test/ 
+
+- Alow you to choose countries that you have visited
+- Calculate the percent of a glob land area represent by this countries
+- Marks vistited countries on the map
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Aplication front end
+
+
+![Caption for the picture.](./app.png)
+
+
+## Maps used
+
+Aplication used google maps deliver by googleVis library
+
+```{r results, warning=FALSE, echo=FALSE, message=FALSE, opts.label='interactive'}
+suppressPackageStartupMessages(library(googleVis))
+op <- options(gvis.plot.tag="chart")
+G<-gvisGeoChart(Exports, locationvar="Country", 
+                 colorvar="Profit",
+                 options=list(projection="kavrayskiy-vii"))
+
+print(G, tag = 'chart')
+
+
+```
+
+
+## Alternative
+
+Other alternative is to use plotly to visualization on the map
+
+```{r plotly ,echo = TRUE,message=FALSE,warning=FALSE}
+library(plotly)
+
+plot_ly(Exports,z = ~Exports$Profit, text = ~Exports$Country, locations = ~Exports$Country, 
+        type = 'choropleth', locationmode = 'country names', 
+        color = Exports$Profit, colors = 'Blues', marker = list(line = borders))
+  
+```
+
